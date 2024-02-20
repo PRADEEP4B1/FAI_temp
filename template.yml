@@ -1,0 +1,25 @@
+name: Template20feb
+on:
+  workflow_call:
+    inputs:
+      target_group:
+        required: true
+        type: string
+      azure_id:
+        required: true
+        type: string
+      aws_account_id:
+        required: true
+        type: string
+jobs:
+  print_variables:
+    runs-on: self-hosted
+    steps:
+      - name: "action checkout"
+        uses: actions/checkout@v4
+        
+      - name: Print Variables
+        run: |
+          echo "Target Group: ${{ inputs.target_group }}"
+          echo "Azure ID: ${{ inputs.azure_id }}"
+          echo "AWS Account ID: ${{ inputs.aws_account_id }}"
