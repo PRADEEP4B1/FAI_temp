@@ -1,0 +1,43 @@
+name: Reusable Template Workflow
+
+on:
+  workflow_call:
+    inputs:
+      param1:
+        required: true
+        type: string
+      param2:
+        required: true
+        type: string
+    secrets:
+      MY_SECRET:
+        required: true
+
+jobs:
+  reusable-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the calling workflow's repository (self)
+      - name: Checkout Caller Repository
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Checkout the reusable workflow repository
+      - name: Checkout Template Repository
+        uses: actions/checkout@v3
+        with:
+          repository: PRADEEP4B1/FAI_temp
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Example step using inputs
+      - name: Print Input Parameters
+        run: echo "Param1: ${{ inputs.param1 }}, Param2: ${{ inputs.param2 }}"
+
+      # Example step using secret
+      - name: Print Secret (Masked)
+        run: echo "MY_SECRET: ${{ secrets.MY_SECRET }}"
